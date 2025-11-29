@@ -78,7 +78,16 @@ const Browser: React.FC<BrowserProps> = (props) => {
             minimizeWindow={props.onMinimize}
             bottomLeftText="Done"
         >
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#c0c0c0', position: 'relative' }}>
+            <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#c0c0c0'
+            }}>
                 {/* Toolbar */}
                 <div style={{ borderBottom: '2px solid #808080', padding: 4, display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                     <span style={{ fontFamily: 'MSSerif', fontSize: 14 }}>Address:</span>
@@ -101,12 +110,8 @@ const Browser: React.FC<BrowserProps> = (props) => {
                     backgroundColor: 'white',
                     border: '2px inset white',
                     margin: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'auto',
-                    width: 'calc(100% - 4px)', // Account for margin
-                    boxSizing: 'border-box',
-                    position: 'relative' // Ensure positioning context
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}>
                     {currentView === 'home' ? (
                         <div style={{
