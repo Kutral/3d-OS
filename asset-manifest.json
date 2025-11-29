@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/3d-OS/static/css/main.703be35f.css",
+    "main.js": "/3d-OS/static/js/main.eae3ad9b.js",
+    "static/js/787.749b4a44.chunk.js": "/3d-OS/static/js/787.749b4a44.chunk.js",
+    "static/media/MSSansSerif.ttf": "/3d-OS/static/media/MSSansSerif.aa14e7b110864a3c2e08.ttf",
+    "static/media/ee.jpg": "/3d-OS/static/media/ee.7656e3a317181c8a39b1.jpg",
+    "static/media/Terminal.ttf": "/3d-OS/static/media/Terminal.6a1b7290048681921b2c.ttf",
+    "static/media/neverGiveUp.jpg": "/3d-OS/static/media/neverGiveUp.c9ee4e48677de77065a9.jpg",
+    "static/media/Millennium.ttf": "/3d-OS/static/media/Millennium.e16d74a8e8e0567ce30e.ttf",
+    "static/media/Millennium-Bold.ttf": "/3d-OS/static/media/Millennium-Bold.cd5e3be832ebd008c852.ttf",
+    "index.html": "/3d-OS/index.html",
+    "main.703be35f.css.map": "/3d-OS/static/css/main.703be35f.css.map",
+    "main.eae3ad9b.js.map": "/3d-OS/static/js/main.eae3ad9b.js.map",
+    "787.749b4a44.chunk.js.map": "/3d-OS/static/js/787.749b4a44.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.703be35f.css",
+    "static/js/main.eae3ad9b.js"
+  ]
+}
