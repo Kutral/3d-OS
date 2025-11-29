@@ -8,7 +8,7 @@ import ShutdownSequence from './ShutdownSequence';
 import Henordle from '../applications/Henordle';
 import Toolbar from './Toolbar';
 import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
-import Scrabble from '../applications/Scrabble';
+import Snake from '../applications/Snake';
 import { IconName } from '../../assets/icons';
 import Credits from '../applications/Credits';
 
@@ -48,11 +48,11 @@ const APPLICATIONS: {
         shortcutIcon: 'doomIcon',
         component: Doom,
     },
-    scrabble: {
-        key: 'scrabble',
-        name: 'Scrabble',
-        shortcutIcon: 'scrabbleIcon',
-        component: Scrabble,
+    snake: {
+        key: 'snake',
+        name: 'Snake',
+        shortcutIcon: 'scrabbleIcon', // Reusing icon or need new one? Let's use scrabbleIcon for now as placeholder or generic game icon
+        component: Snake,
     },
     henordle: {
         key: 'henordle',
