@@ -8,37 +8,21 @@ export interface CreditsProps extends WindowAppProps { }
 const CREDITS = [
     {
         title: 'Engineering & Design',
-        rows: [['Kutraleeswaran B', 'All']],
+        rows: [['Kutraleeswaran B', 'Full Stack Developer']],
     },
     {
-        title: 'Modeling & Texturing',
+        title: 'Assets & Resources',
         rows: [
-            ['Kutraleeswaran B', 'Texturing, Composition, & UV'],
-            ['Mickael Boitte', 'Computer Model'],
-            ['Sean Nicolas', 'Environment Models'],
-        ],
-    },
-    {
-        title: 'Sound Design',
-        rows: [
-            ['Kutraleeswaran B', 'Mixing, Composition, & Foley'],
-            ['Sound Cassette', 'Office Ambience'],
-            ['Windows 95 Startup Sound', 'Microsoft'],
+            ['3D Models', 'Open Source'],
+            ['Icons', 'Windows 95 Assets'],
+            ['Sound Effects', 'Various Sources'],
         ],
     },
     {
         title: 'Special Thanks',
         rows: [
-            ['Bruno Simon', 'SimonDev'],
-            ['Lorelei Kravinsky', 'Scott Bass'],
-            ['Trey Briccetti', 'Mom, Dad & Angela'],
-        ],
-    },
-    {
-        title: 'Inspiration',
-        rows: [
-            ['Bruno Simon', 'Jesse Zhou'],
-            ['Pink Yellow', 'Vivek Patel'],
+            ['Zoho School', 'Mentorship'],
+            ['GitHub Community', 'Inspiration'],
         ],
     },
 ];
