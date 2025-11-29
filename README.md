@@ -70,7 +70,6 @@ The site will be available at `http://localhost:3000/`
 ## 📞 Contact
 
 - **Email:** kutraleeswaran2003@gmail.com
-- **Phone:** +91-9597581629
 - **GitHub:** [github.com/kutral](https://github.com/kutral)
 - **LinkedIn:** [linkedin.com/in/kutraleeswaranb](https://linkedin.com/in/kutraleeswaranb/)
 - **Portfolio:** [kutral.github.io/3d](https://kutral.github.io/3d/)
