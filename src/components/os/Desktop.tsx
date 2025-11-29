@@ -6,6 +6,7 @@ import OregonTrail from '../applications/OregonTrail';
 import ShutdownSequence from './ShutdownSequence';
 // import ThisComputer from '../applications/ThisComputer';
 import Minesweeper from '../applications/Minesweeper';
+import Browser from '../applications/Browser';
 import Toolbar from './Toolbar';
 import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
 import Snake from '../applications/Snake';
@@ -59,6 +60,12 @@ const APPLICATIONS: {
         name: 'Minesweeper',
         shortcutIcon: 'windowGameIcon',
         component: Minesweeper,
+    },
+    browser: {
+        key: 'browser',
+        name: 'Internet',
+        shortcutIcon: 'windowExplorerIcon',
+        component: Browser,
     },
     credits: {
         key: 'credits',
