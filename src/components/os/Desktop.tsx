@@ -98,7 +98,7 @@ const APPLICATIONS: {
     games: {
         key: 'games',
         name: 'Games',
-        shortcutIcon: 'windowGameIcon', // Using generic game icon for folder
+        shortcutIcon: 'windowExplorerIcon', // Using explorer icon for folder look
         component: GamesFolder,
     },
 };
