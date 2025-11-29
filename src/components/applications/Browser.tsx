@@ -105,17 +105,22 @@ const Browser: React.FC<BrowserProps> = (props) => {
                     flexDirection: 'column',
                     overflow: 'auto',
                     width: 'calc(100% - 4px)', // Account for margin
-                    boxSizing: 'border-box'
+                    boxSizing: 'border-box',
+                    position: 'relative' // Ensure positioning context
                 }}>
                     {currentView === 'home' ? (
                         <div style={{
-                            flex: 1,
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
                             width: '100%',
-                            minHeight: '100%' // Ensure it takes full height
+                            height: '100%'
                         }}>
                             {/* Retro Google Logo */}
                             <div style={{
