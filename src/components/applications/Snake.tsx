@@ -24,8 +24,8 @@ const Snake: React.FC<SnakeProps> = (props) => {
 
     const generateFood = (): Point => {
         // Fixed grid size for the game board
-        const boardWidth = 20; // 20 cells wide
-        const boardHeight = 20; // 20 cells high
+        const boardWidth = GRID_SIZE; // 20 cells wide
+        const boardHeight = GRID_SIZE; // 20 cells high
         return {
             x: Math.floor(Math.random() * boardWidth),
             y: Math.floor(Math.random() * boardHeight),
@@ -83,8 +83,8 @@ const Snake: React.FC<SnakeProps> = (props) => {
                 }
 
                 // Board dimensions
-                const boardWidth = 20;
-                const boardHeight = 20;
+                const boardWidth = GRID_SIZE;
+                const boardHeight = GRID_SIZE;
 
                 // Check collision with walls
                 if (
@@ -128,8 +128,8 @@ const Snake: React.FC<SnakeProps> = (props) => {
     }, [direction, food, gameOver, isPaused, highScore]);
 
     // Fixed board size in pixels
-    const BOARD_WIDTH_PX = 20 * CELL_SIZE;
-    const BOARD_HEIGHT_PX = 20 * CELL_SIZE;
+    const BOARD_WIDTH_PX = GRID_SIZE * CELL_SIZE;
+    const BOARD_HEIGHT_PX = GRID_SIZE * CELL_SIZE;
 
     return (
         <Window
