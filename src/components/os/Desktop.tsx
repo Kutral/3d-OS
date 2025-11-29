@@ -7,6 +7,7 @@ import ShutdownSequence from './ShutdownSequence';
 // import ThisComputer from '../applications/ThisComputer';
 import Minesweeper from '../applications/Minesweeper';
 import Browser from '../applications/Browser';
+import TicTacToe from '../applications/TicTacToe';
 import Toolbar from './Toolbar';
 import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
 import Snake from '../applications/Snake';
@@ -66,6 +67,12 @@ const APPLICATIONS: {
         name: 'Internet',
         shortcutIcon: 'windowExplorerIcon',
         component: Browser,
+    },
+    tictactoe: {
+        key: 'tictactoe',
+        name: 'Tic Tac Toe',
+        shortcutIcon: 'windowGameIcon',
+        component: TicTacToe,
     },
     credits: {
         key: 'credits',
