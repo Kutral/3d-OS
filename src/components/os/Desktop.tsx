@@ -15,6 +15,7 @@ import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
 import Snake from '../applications/Snake';
 import { IconName } from '../../assets/icons';
 import Credits from '../applications/Credits';
+import GamesFolder from '../applications/GamesFolder';
 
 export interface DesktopProps { }
 
@@ -94,6 +95,12 @@ const APPLICATIONS: {
         shortcutIcon: 'credits',
         component: Credits,
     },
+    games: {
+        key: 'games',
+        name: 'Games',
+        shortcutIcon: 'windowGameIcon', // Using generic game icon for folder
+        component: GamesFolder,
+    },
 };
 
 const Desktop: React.FC<DesktopProps> = (props) => {
@@ -103,44 +110,6 @@ const Desktop: React.FC<DesktopProps> = (props) => {
 
     const [shutdown, setShutdown] = useState(false);
     const [numShutdowns, setNumShutdowns] = useState(1);
-
-    useEffect(() => {
-        if (shutdown === true) {
-            rebootDesktop();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shutdown]);
-
-    useEffect(() => {
-        const newShortcuts: DesktopShortcutProps[] = [];
-        Object.keys(APPLICATIONS).forEach((key) => {
-            const app = APPLICATIONS[key];
-            newShortcuts.push({
-                shortcutName: app.name,
-                icon: app.shortcutIcon,
-                onOpen: () => {
-                    addWindow(
-                        app.key,
-                        <app.component
-                            onInteract={() => onWindowInteract(app.key)}
-                            onMinimize={() => minimizeWindow(app.key)}
-                            onClose={() => removeWindow(app.key)}
-                            key={app.key}
-                        />
-                    );
-                },
-            });
-        });
-
-        newShortcuts.forEach((shortcut) => {
-            if (shortcut.shortcutName === 'My Showcase') {
-                shortcut.onOpen();
-            }
-        });
-
-        setShortcuts(newShortcuts);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const rebootDesktop = useCallback(() => {
         setWindows({});
@@ -229,63 +198,144 @@ const Desktop: React.FC<DesktopProps> = (props) => {
         [getHighestZIndex]
     );
 
-    return !shutdown ? (
-        <div style={styles.desktop}>
-            {/* For each window in windows, loop over and render  */}
-            {Object.keys(windows).map((key) => {
-                const element = windows[key].component;
-                if (!element) return <div key={`win-${key}`}></div>;
+    useEffect(() => {
+        if (shutdown === true) {
+            rebootDesktop();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shutdown]);
+
+    useEffect(() => {
+        const newShortcuts: DesktopShortcutProps[] = [];
+        Object.keys(APPLICATIONS).forEach((key) => {
+            const app = APPLICATIONS[key];
+
+            // Skip individual games
+            if (['doom', 'trail', 'snake', 'minesweeper', 'tictactoe'].includes(key)) {
+                return;
+            }
+
+            if (key === 'games') {
+                newShortcuts.push({
+                    shortcutName: app.name,
+                    icon: app.shortcutIcon,
+                    onOpen: () => {
+                        const gameApps = ['doom', 'trail', 'snake', 'minesweeper', 'tictactoe'].map(gameKey => ({
+                            key: gameKey,
+                            name: APPLICATIONS[gameKey].name,
+                            icon: APPLICATIONS[gameKey].shortcutIcon,
+                            onOpen: () => {
+                                addWindow(
+                                    gameKey,
+                                    <APPLICATIONS[gameKey].component
+                                        onInteract = {() => onWindowInteract(gameKey)}
+onMinimize = {() => minimizeWindow(gameKey)}
+onClose = {() => removeWindow(gameKey)}
+key = { gameKey }
+    />
+                                );
+                            }
+                        }));
+
+addWindow(
+    app.key,
+    <GamesFolder
+        onInteract={() => onWindowInteract(app.key)}
+        onMinimize={() => minimizeWindow(app.key)}
+        onClose={() => removeWindow(app.key)}
+        apps={gameApps}
+        key={app.key}
+    />
+);
+                    },
+                });
+return;
+            }
+
+newShortcuts.push({
+    shortcutName: app.name,
+    icon: app.shortcutIcon,
+    onOpen: () => {
+        addWindow(
+            app.key,
+            <app.component
+                onInteract={() => onWindowInteract(app.key)}
+                onMinimize={() => minimizeWindow(app.key)}
+                onClose={() => removeWindow(app.key)}
+                key={app.key}
+            />
+        );
+    },
+});
+        });
+
+newShortcuts.forEach((shortcut) => {
+    if (shortcut.shortcutName === 'My Showcase') {
+        shortcut.onOpen();
+    }
+});
+
+setShortcuts(newShortcuts);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+return !shutdown ? (
+    <div style={styles.desktop}>
+        {/* For each window in windows, loop over and render  */}
+        {Object.keys(windows).map((key) => {
+            const element = windows[key].component;
+            if (!element) return <div key={`win-${key}`}></div>;
+            return (
+                <div
+                    key={`win-${key}`}
+                    style={Object.assign(
+                        {},
+                        { zIndex: windows[key].zIndex },
+                        windows[key].minimized && styles.minimized
+                    )}
+                >
+                    {React.cloneElement(element, {
+                        key,
+                        onInteract: () => onWindowInteract(key),
+                        onClose: () => removeWindow(key),
+                    })}
+                </div>
+            );
+        })}
+        <div style={styles.shortcuts}>
+            {shortcuts.map((shortcut, i) => {
+                const ITEMS_PER_COL = 5;
+                const col = Math.floor(i / ITEMS_PER_COL);
+                const row = i % ITEMS_PER_COL;
                 return (
                     <div
-                        key={`win-${key}`}
-                        style={Object.assign(
-                            {},
-                            { zIndex: windows[key].zIndex },
-                            windows[key].minimized && styles.minimized
-                        )}
-                    >
-                        {React.cloneElement(element, {
-                            key,
-                            onInteract: () => onWindowInteract(key),
-                            onClose: () => removeWindow(key),
+                        style={Object.assign({}, styles.shortcutContainer, {
+                            top: row * 104,
+                            left: col * 100,
                         })}
+                        key={shortcut.shortcutName}
+                    >
+                        <DesktopShortcut
+                            icon={shortcut.icon}
+                            shortcutName={shortcut.shortcutName}
+                            onOpen={shortcut.onOpen}
+                        />
                     </div>
                 );
             })}
-            <div style={styles.shortcuts}>
-                {shortcuts.map((shortcut, i) => {
-                    const ITEMS_PER_COL = 5;
-                    const col = Math.floor(i / ITEMS_PER_COL);
-                    const row = i % ITEMS_PER_COL;
-                    return (
-                        <div
-                            style={Object.assign({}, styles.shortcutContainer, {
-                                top: row * 104,
-                                left: col * 100,
-                            })}
-                            key={shortcut.shortcutName}
-                        >
-                            <DesktopShortcut
-                                icon={shortcut.icon}
-                                shortcutName={shortcut.shortcutName}
-                                onOpen={shortcut.onOpen}
-                            />
-                        </div>
-                    );
-                })}
-            </div>
-            <Toolbar
-                windows={windows}
-                toggleMinimize={toggleMinimize}
-                shutdown={startShutdown}
-            />
         </div>
-    ) : (
-        <ShutdownSequence
-            setShutdown={setShutdown}
-            numShutdowns={numShutdowns}
+        <Toolbar
+            windows={windows}
+            toggleMinimize={toggleMinimize}
+            shutdown={startShutdown}
         />
-    );
+    </div>
+) : (
+    <ShutdownSequence
+        setShutdown={setShutdown}
+        numShutdowns={numShutdowns}
+    />
+);
 };
 
 const styles: StyleSheetCSS = {
