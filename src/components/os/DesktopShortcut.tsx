@@ -88,11 +88,57 @@ const DesktopShortcut: React.FC<DesktopShortcutProps> = ({
         };
     }, [isSelected, handleClickOutside]);
 
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const dragStartRef = useRef({ x: 0, y: 0 });
+    const positionRef = useRef({ x: 0, y: 0 });
+
+    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+        dragStartRef.current = { x: e.clientX, y: e.clientY };
+        handleClickShortcut();
+    }, [handleClickShortcut]);
+
+    // Simplified drag logic:
+    // On mouse down, record clientX/Y.
+    // On mouse move, calculate delta and add to saved position.
+    // But we need to update state to render.
+
+    useEffect(() => {
+        if (!isDragging) return;
+
+        const handleMove = (e: MouseEvent) => {
+            const dx = e.clientX - dragStartRef.current.x;
+            const dy = e.clientY - dragStartRef.current.y;
+            setPosition({
+                x: positionRef.current.x + dx,
+                y: positionRef.current.y + dy
+            });
+        };
+
+        const handleUp = () => {
+            setIsDragging(false);
+            positionRef.current = position;
+        };
+
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleUp);
+
+        return () => {
+            window.removeEventListener('mousemove', handleMove);
+            window.removeEventListener('mouseup', handleUp);
+        };
+    }, [isDragging, position]); // position dependency might cause lag? No.
+
     return (
         <div
             id={`${shortcutId}`}
-            style={Object.assign({}, styles.appShortcut, scaledStyle)}
-            onMouseDown={handleClickShortcut}
+            style={Object.assign({}, styles.appShortcut, scaledStyle, {
+                transform: `translate(${position.x}px, ${position.y}px) ${(scaledStyle as any).transform || ''}`,
+                cursor: isDragging ? 'grabbing' : 'pointer'
+            })}
+            onMouseDown={handleMouseDown}
             ref={containerRef}
         >
             <div id={`${shortcutId}`} style={styles.iconContainer}>
