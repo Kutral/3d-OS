@@ -64,25 +64,36 @@ const Browser: React.FC<BrowserProps> = (props) => {
                     flexDirection: 'column',
                     overflow: 'auto',
                     width: '100%',
-                    boxSizing: 'border-box'
+                    boxSizing: 'border-box',
+                    position: 'relative' // Ensure positioning context
                 }}>
                     {currentView === 'home' ? (
                         <div style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            height: '100%',
-                            width: '100%'
+                            minHeight: '100%'
                         }}>
-                            {/* Google Logo */}
-                            <div style={{ fontSize: 60, fontFamily: 'Times New Roman', marginBottom: 20 }}>
-                                <span style={{ color: '#4285f4' }}>G</span>
-                                <span style={{ color: '#ea4335' }}>o</span>
-                                <span style={{ color: '#fbbc05' }}>o</span>
-                                <span style={{ color: '#4285f4' }}>g</span>
-                                <span style={{ color: '#34a853' }}>l</span>
-                                <span style={{ color: '#ea4335' }}>e</span>
+                            {/* Retro Google Logo (1999 style colors + shadow) */}
+                            <div style={{
+                                fontSize: 60,
+                                fontFamily: 'Times New Roman',
+                                marginBottom: 20,
+                                textShadow: '2px 2px 1px #ccc',
+                                letterSpacing: -2
+                            }}>
+                                <span style={{ color: '#3369E8' }}>G</span>
+                                <span style={{ color: '#D50F25' }}>o</span>
+                                <span style={{ color: '#EEB211' }}>o</span>
+                                <span style={{ color: '#3369E8' }}>g</span>
+                                <span style={{ color: '#009925' }}>l</span>
+                                <span style={{ color: '#D50F25' }}>e</span>
                                 <span style={{ fontSize: 14, color: '#666', marginLeft: 4 }}>!</span>
                             </div>
 
@@ -93,7 +104,8 @@ const Browser: React.FC<BrowserProps> = (props) => {
                                 maxWidth: 400,
                                 textAlign: 'center',
                                 border: '1px solid #ccc',
-                                marginBottom: 20
+                                marginBottom: 20,
+                                boxShadow: '2px 2px 0px rgba(0,0,0,0.1)'
                             }}>
                                 <p style={{ margin: '0 0 10px 0', fontSize: 12, fontFamily: 'Arial' }}>Search the web using Google!</p>
                                 <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -101,11 +113,11 @@ const Browser: React.FC<BrowserProps> = (props) => {
                                         type="text"
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                                        style={{ width: '90%', marginBottom: 10, padding: 4 }}
+                                        style={{ width: '90%', marginBottom: 10, padding: 4, border: '1px solid #999' }}
                                     />
                                     <div>
-                                        <button type="submit" style={{ marginRight: 5, padding: '2px 8px', cursor: 'pointer' }}>Google Search</button>
-                                        <button type="button" style={{ padding: '2px 8px', cursor: 'pointer' }}>I'm feeling lucky</button>
+                                        <button type="submit" style={{ marginRight: 5, padding: '2px 8px', cursor: 'pointer', fontFamily: 'Arial', fontSize: 11 }}>Google Search</button>
+                                        <button type="button" style={{ padding: '2px 8px', cursor: 'pointer', fontFamily: 'Arial', fontSize: 11 }}>I'm feeling lucky</button>
                                     </div>
                                 </form>
                             </div>
@@ -132,13 +144,19 @@ const Browser: React.FC<BrowserProps> = (props) => {
                                 paddingBottom: 10,
                                 width: '100%'
                             }}>
-                                <div style={{ fontSize: 24, fontFamily: 'Times New Roman', marginRight: 20, cursor: 'pointer' }} onClick={goHome}>
-                                    <span style={{ color: '#4285f4' }}>G</span>
-                                    <span style={{ color: '#ea4335' }}>o</span>
-                                    <span style={{ color: '#fbbc05' }}>o</span>
-                                    <span style={{ color: '#4285f4' }}>g</span>
-                                    <span style={{ color: '#34a853' }}>l</span>
-                                    <span style={{ color: '#ea4335' }}>e</span>
+                                <div style={{
+                                    fontSize: 24,
+                                    fontFamily: 'Times New Roman',
+                                    marginRight: 20,
+                                    cursor: 'pointer',
+                                    letterSpacing: -1
+                                }} onClick={goHome}>
+                                    <span style={{ color: '#3369E8' }}>G</span>
+                                    <span style={{ color: '#D50F25' }}>o</span>
+                                    <span style={{ color: '#EEB211' }}>o</span>
+                                    <span style={{ color: '#3369E8' }}>g</span>
+                                    <span style={{ color: '#009925' }}>l</span>
+                                    <span style={{ color: '#D50F25' }}>e</span>
                                 </div>
                                 <form onSubmit={handleSearch} style={{ display: 'flex', flex: 1 }}>
                                     <input
@@ -153,7 +171,7 @@ const Browser: React.FC<BrowserProps> = (props) => {
 
                             {/* Mock Results */}
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                                <div style={{ fontSize: 12, color: '#666' }}>
+                                <div style={{ fontSize: 12, color: '#666', backgroundColor: '#eee', padding: 4 }}>
                                     Showing results for <b>{searchTerm}</b>
                                 </div>
 
