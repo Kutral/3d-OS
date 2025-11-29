@@ -126,14 +126,16 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#c0c0c0' }}>
                 {/* Toolbar */}
                 <div style={{ borderBottom: '2px solid #808080', padding: 4, display: 'flex', gap: 4, alignItems: 'center' }}>
-                    <button onClick={handleUp} disabled={currentPath.length <= 1} style={{ minWidth: 60, padding: '2px 8px' }}>Up</button>
+                    <button onClick={handleUp} disabled={currentPath.length <= 1} style={{ minWidth: 60, padding: '2px 8px', cursor: 'pointer' }}>Up</button>
                     <div style={{
                         flex: 1,
                         backgroundColor: 'white',
                         border: '2px inset white',
                         padding: '2px 4px',
                         fontFamily: 'MSSerif',
-                        fontSize: 12
+                        fontSize: 12,
+                        display: 'flex',
+                        alignItems: 'center'
                     }}>
                         {currentPath.map(p => p.name).join('\\')}
                     </div>
@@ -150,7 +152,9 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
                     flexWrap: 'wrap',
                     alignContent: 'flex-start',
                     gap: 20,
-                    overflow: 'auto'
+                    overflow: 'auto',
+                    width: '100%',
+                    boxSizing: 'border-box'
                 }}>
                     {currentFolder?.children?.map((item, i) => (
                         <div
@@ -179,7 +183,8 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontSize: 20
+                                fontSize: 20,
+                                userSelect: 'none'
                             }}>
                                 {item.type === 'folder' ? '📁' : '🎵'}
                             </div>
@@ -187,7 +192,8 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
                                 textAlign: 'center',
                                 fontFamily: 'MSSerif',
                                 fontSize: 12,
-                                wordBreak: 'break-word'
+                                wordBreak: 'break-word',
+                                userSelect: 'none'
                             }}>
                                 {item.name}
                             </span>
@@ -201,10 +207,18 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
                     )}
                 </div>
 
-                {/* Audio Player Control (Hidden or Visible) */}
+                {/* Audio Player Control */}
                 {playingFile && (
-                    <div style={{ padding: 4, borderTop: '2px solid #808080', display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <audio ref={audioRef} controls style={{ height: 30, width: '100%' }} />
+                    <div style={{
+                        padding: 8,
+                        borderTop: '2px solid #808080',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 4,
+                        backgroundColor: '#c0c0c0'
+                    }}>
+                        <div style={{ fontSize: 12, fontFamily: 'MSSerif', marginBottom: 2 }}>Now Playing: {playingFile.split('/').pop()}</div>
+                        <audio ref={audioRef} controls style={{ width: '100%', height: 30 }} />
                     </div>
                 )}
             </div>
