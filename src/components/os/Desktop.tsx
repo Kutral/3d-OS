@@ -5,7 +5,7 @@ import Doom from '../applications/Doom';
 import OregonTrail from '../applications/OregonTrail';
 import ShutdownSequence from './ShutdownSequence';
 // import ThisComputer from '../applications/ThisComputer';
-import Henordle from '../applications/Henordle';
+import Minesweeper from '../applications/Minesweeper';
 import Toolbar from './Toolbar';
 import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
 import Snake from '../applications/Snake';
@@ -54,11 +54,11 @@ const APPLICATIONS: {
         shortcutIcon: 'scrabbleIcon', // Reusing icon or need new one? Let's use scrabbleIcon for now as placeholder or generic game icon
         component: Snake,
     },
-    henordle: {
-        key: 'henordle',
-        name: 'Henordle',
-        shortcutIcon: 'henordleIcon',
-        component: Henordle,
+    minesweeper: {
+        key: 'minesweeper',
+        name: 'Minesweeper',
+        shortcutIcon: 'henordleIcon', // Reusing icon for now
+        component: Minesweeper,
     },
     credits: {
         key: 'credits',
