@@ -104,8 +104,8 @@ const Browser: React.FC<BrowserProps> = (props) => {
                                         style={{ width: '90%', marginBottom: 10, padding: 4 }}
                                     />
                                     <div>
-                                        <button type="submit" style={{ marginRight: 5, padding: '2px 8px' }}>Google Search</button>
-                                        <button type="button" style={{ padding: '2px 8px' }}>I'm feeling lucky</button>
+                                        <button type="submit" style={{ marginRight: 5, padding: '2px 8px', cursor: 'pointer' }}>Google Search</button>
+                                        <button type="button" style={{ padding: '2px 8px', cursor: 'pointer' }}>I'm feeling lucky</button>
                                     </div>
                                 </form>
                             </div>
@@ -115,10 +115,24 @@ const Browser: React.FC<BrowserProps> = (props) => {
                             </div>
                         </div>
                     ) : (
-                        <div style={{ padding: 20, fontFamily: 'Arial' }}>
+                        <div style={{
+                            padding: 20,
+                            fontFamily: 'Arial',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '100%',
+                            boxSizing: 'border-box'
+                        }}>
                             {/* Search Results Header */}
-                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10, borderBottom: '1px solid #ccc', paddingBottom: 10 }}>
-                                <div style={{ fontSize: 24, fontFamily: 'Times New Roman', marginRight: 10, cursor: 'pointer' }} onClick={goHome}>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginBottom: 20,
+                                borderBottom: '1px solid #ccc',
+                                paddingBottom: 10,
+                                width: '100%'
+                            }}>
+                                <div style={{ fontSize: 24, fontFamily: 'Times New Roman', marginRight: 20, cursor: 'pointer' }} onClick={goHome}>
                                     <span style={{ color: '#4285f4' }}>G</span>
                                     <span style={{ color: '#ea4335' }}>o</span>
                                     <span style={{ color: '#fbbc05' }}>o</span>
@@ -131,32 +145,34 @@ const Browser: React.FC<BrowserProps> = (props) => {
                                         type="text"
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                                        style={{ flex: 1, maxWidth: 300, marginRight: 5 }}
+                                        style={{ flex: 1, maxWidth: 400, marginRight: 10, padding: 4 }}
                                     />
-                                    <button type="submit">Search</button>
+                                    <button type="submit" style={{ padding: '2px 10px', cursor: 'pointer' }}>Search</button>
                                 </form>
                             </div>
 
                             {/* Mock Results */}
-                            <div style={{ fontSize: 12 }}>
-                                <p style={{ color: '#666' }}>Showing results for <b>{searchTerm}</b></p>
-
-                                <div style={{ marginBottom: 15 }}>
-                                    <a href="#" style={{ color: '#0000cc', fontSize: 14, textDecoration: 'underline' }}>{searchTerm} - Wikipedia, the free encyclopedia</a>
-                                    <div style={{ color: '#008000' }}>www.wikipedia.org/wiki/{searchTerm}</div>
-                                    <div style={{ color: '#000' }}>{searchTerm} is a very interesting topic that you are searching for...</div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                                <div style={{ fontSize: 12, color: '#666' }}>
+                                    Showing results for <b>{searchTerm}</b>
                                 </div>
 
-                                <div style={{ marginBottom: 15 }}>
-                                    <a href="#" style={{ color: '#0000cc', fontSize: 14, textDecoration: 'underline' }}>The Official {searchTerm} Website</a>
-                                    <div style={{ color: '#008000' }}>www.{searchTerm.replace(/\s+/g, '').toLowerCase()}.com/</div>
-                                    <div style={{ color: '#000' }}>Welcome to the official website for {searchTerm}. Find all the latest news and updates.</div>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <a href="#" style={{ color: '#0000cc', fontSize: 16, textDecoration: 'underline', marginBottom: 2 }}>{searchTerm} - Wikipedia, the free encyclopedia</a>
+                                    <div style={{ color: '#008000', fontSize: 12, marginBottom: 2 }}>www.wikipedia.org/wiki/{searchTerm}</div>
+                                    <div style={{ color: '#000', fontSize: 12 }}>{searchTerm} is a very interesting topic that you are searching for. Wikipedia has a comprehensive article about it.</div>
                                 </div>
 
-                                <div style={{ marginBottom: 15 }}>
-                                    <a href="#" style={{ color: '#0000cc', fontSize: 14, textDecoration: 'underline' }}>Images for {searchTerm}</a>
-                                    <div style={{ color: '#008000' }}>images.google.com/images?q={searchTerm}</div>
-                                    <div style={{ color: '#000' }}>See more images for {searchTerm}.</div>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <a href="#" style={{ color: '#0000cc', fontSize: 16, textDecoration: 'underline', marginBottom: 2 }}>The Official {searchTerm} Website</a>
+                                    <div style={{ color: '#008000', fontSize: 12, marginBottom: 2 }}>www.{searchTerm.replace(/\s+/g, '').toLowerCase()}.com/</div>
+                                    <div style={{ color: '#000', fontSize: 12 }}>Welcome to the official website for {searchTerm}. Find all the latest news, updates, and information here.</div>
+                                </div>
+
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <a href="#" style={{ color: '#0000cc', fontSize: 16, textDecoration: 'underline', marginBottom: 2 }}>Images for {searchTerm}</a>
+                                    <div style={{ color: '#008000', fontSize: 12, marginBottom: 2 }}>images.google.com/images?q={searchTerm}</div>
+                                    <div style={{ color: '#000', fontSize: 12 }}>See more images for {searchTerm}.</div>
                                 </div>
                             </div>
                         </div>
