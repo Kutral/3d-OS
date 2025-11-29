@@ -29,7 +29,6 @@ const Browser: React.FC<BrowserProps> = (props) => {
             setLoading(true);
 
             try {
-                // Fetch real results from Wikipedia API
                 const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchTerm)}&format=json&origin=*`);
                 const data = await response.json();
                 if (data.query && data.query.search) {
@@ -81,7 +80,7 @@ const Browser: React.FC<BrowserProps> = (props) => {
         >
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#c0c0c0', position: 'relative' }}>
                 {/* Toolbar */}
-                <div style={{ borderBottom: '2px solid #808080', padding: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <div style={{ borderBottom: '2px solid #808080', padding: 4, display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                     <span style={{ fontFamily: 'MSSerif', fontSize: 14 }}>Address:</span>
                     <input
                         type="text"
@@ -105,22 +104,18 @@ const Browser: React.FC<BrowserProps> = (props) => {
                     display: 'flex',
                     flexDirection: 'column',
                     overflow: 'auto',
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    position: 'relative'
+                    width: 'calc(100% - 4px)', // Account for margin
+                    boxSizing: 'border-box'
                 }}>
                     {currentView === 'home' ? (
                         <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
+                            flex: 1,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            minHeight: '100%'
+                            width: '100%',
+                            minHeight: '100%' // Ensure it takes full height
                         }}>
                             {/* Retro Google Logo */}
                             <div style={{
@@ -128,7 +123,8 @@ const Browser: React.FC<BrowserProps> = (props) => {
                                 fontFamily: 'Times New Roman',
                                 marginBottom: 20,
                                 textShadow: '2px 2px 1px #ccc',
-                                letterSpacing: -2
+                                letterSpacing: -2,
+                                textAlign: 'center'
                             }}>
                                 <span style={{ color: '#3369E8' }}>G</span>
                                 <span style={{ color: '#D50F25' }}>o</span>
@@ -175,7 +171,8 @@ const Browser: React.FC<BrowserProps> = (props) => {
                             display: 'flex',
                             flexDirection: 'column',
                             width: '100%',
-                            boxSizing: 'border-box'
+                            boxSizing: 'border-box',
+                            flex: 1
                         }}>
                             {/* Search Results Header */}
                             <div style={{
