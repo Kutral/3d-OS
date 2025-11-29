@@ -33,7 +33,7 @@ const APPLICATIONS: {
     showcase: {
         key: 'showcase',
         name: 'My Showcase',
-        shortcutIcon: 'showcaseIcon',
+        shortcutIcon: 'myComputer',
         component: ShowcaseExplorer,
     },
     trail: {
@@ -51,13 +51,13 @@ const APPLICATIONS: {
     snake: {
         key: 'snake',
         name: 'Snake',
-        shortcutIcon: 'scrabbleIcon', // Reusing icon or need new one? Let's use scrabbleIcon for now as placeholder or generic game icon
+        shortcutIcon: 'windowGameIcon',
         component: Snake,
     },
     minesweeper: {
         key: 'minesweeper',
         name: 'Minesweeper',
-        shortcutIcon: 'henordleIcon', // Reusing icon for now
+        shortcutIcon: 'windowGameIcon',
         component: Minesweeper,
     },
     credits: {
