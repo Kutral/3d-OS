@@ -179,69 +179,80 @@ const Minesweeper: React.FC<MinesweeperProps> = (props) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100%',
+                width: '100%',
                 backgroundColor: '#c0c0c0',
-                padding: 10
+                padding: 10,
+                boxSizing: 'border-box'
             }}>
-                {/* Header */}
+                {/* Game Container */}
                 <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    maxWidth: 300,
-                    marginBottom: 10,
-                    border: '2px inset white',
-                    padding: 5,
-                    backgroundColor: '#c0c0c0'
+                    border: '3px outset white',
+                    padding: 6,
+                    backgroundColor: '#c0c0c0',
+                    display: 'inline-block'
                 }}>
-                    <div style={{ background: 'black', color: 'red', fontFamily: 'monospace', fontSize: 24, padding: '0 5px' }}>
-                        {mineCount.toString().padStart(3, '0')}
+                    {/* Header */}
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        marginBottom: 6,
+                        border: '2px inset white',
+                        padding: 4,
+                        backgroundColor: '#c0c0c0',
+                        boxSizing: 'border-box'
+                    }}>
+                        <div style={{ background: 'black', color: 'red', fontFamily: 'monospace', fontSize: 24, padding: '0 5px' }}>
+                            {mineCount.toString().padStart(3, '0')}
+                        </div>
+                        <button onClick={initGame} style={{ fontSize: 20, cursor: 'pointer', border: '2px outset white', background: '#c0c0c0', padding: '0 4px' }}>
+                            {gameOver ? (win ? '😎' : '😵') : '🙂'}
+                        </button>
+                        <div style={{ background: 'black', color: 'red', fontFamily: 'monospace', fontSize: 24, padding: '0 5px' }}>
+                            {timer.toString().padStart(3, '0')}
+                        </div>
                     </div>
-                    <button onClick={initGame} style={{ fontSize: 20, cursor: 'pointer' }}>
-                        {gameOver ? (win ? '😎' : '😵') : '🙂'}
-                    </button>
-                    <div style={{ background: 'black', color: 'red', fontFamily: 'monospace', fontSize: 24, padding: '0 5px' }}>
-                        {timer.toString().padStart(3, '0')}
-                    </div>
-                </div>
 
-                {/* Grid */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: `repeat(${COLS}, 30px)`,
-                    gap: 1,
-                    border: '3px inset white',
-                    backgroundColor: '#808080'
-                }}>
-                    {grid.map((row, r) => (
-                        row.map((cell, c) => (
-                            <div
-                                key={`${r}-${c}`}
-                                onClick={() => revealCell(r, c)}
-                                onContextMenu={(e) => toggleFlag(e, r, c)}
-                                style={{
-                                    width: 30,
-                                    height: 30,
-                                    backgroundColor: cell.isRevealed ? '#c0c0c0' : '#c0c0c0',
-                                    border: cell.isRevealed ? '1px solid #808080' : '3px outset white',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    cursor: 'default',
-                                    fontWeight: 'bold',
-                                    fontSize: 18,
-                                    color: getCellColor(cell.neighborMines)
-                                }}
-                            >
-                                {cell.isRevealed ? (
-                                    cell.isMine ? '💣' : (cell.neighborMines > 0 ? cell.neighborMines : '')
-                                ) : (
-                                    cell.isFlagged ? '🚩' : ''
-                                )}
-                            </div>
-                        ))
-                    ))}
+                    {/* Grid */}
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: `repeat(${COLS}, 30px)`,
+                        gap: 0,
+                        border: '3px inset white',
+                        backgroundColor: '#808080'
+                    }}>
+                        {grid.map((row, r) => (
+                            row.map((cell, c) => (
+                                <div
+                                    key={`${r}-${c}`}
+                                    onClick={() => revealCell(r, c)}
+                                    onContextMenu={(e) => toggleFlag(e, r, c)}
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        backgroundColor: cell.isRevealed ? '#c0c0c0' : '#c0c0c0',
+                                        border: cell.isRevealed ? '1px solid #808080' : '3px outset white',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'default',
+                                        fontWeight: 'bold',
+                                        fontSize: 18,
+                                        color: getCellColor(cell.neighborMines),
+                                        boxSizing: 'border-box'
+                                    }}
+                                >
+                                    {cell.isRevealed ? (
+                                        cell.isMine ? '💣' : (cell.neighborMines > 0 ? cell.neighborMines : '')
+                                    ) : (
+                                        cell.isFlagged ? '🚩' : ''
+                                    )}
+                                </div>
+                            ))
+                        ))}
+                    </div>
                 </div>
-                <div style={{ marginTop: 10, fontSize: 12 }}>Left Click: Reveal | Right Click: Flag</div>
+                <div style={{ marginTop: 10, fontSize: 12, fontFamily: 'MSSerif' }}>Left Click: Reveal | Right Click: Flag</div>
             </div>
         </Window>
     );

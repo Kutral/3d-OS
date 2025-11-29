@@ -96,7 +96,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                 >
                     <div style={styles.startWindowInner}>
                         <div style={styles.verticalStartContainer}>
-                            <p style={styles.verticalText}>HeffernanOS</p>
+                            <p style={styles.verticalText}>KutralOS</p>
                         </div>
                         <div style={styles.startWindowContent}>
                             <div style={styles.startMenuSpace} />
@@ -152,8 +152,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
                                         {},
                                         styles.tabContainerOuter,
                                         lastActive === key &&
-                                            !windows[key].minimized &&
-                                            styles.activeTabOuter
+                                        !windows[key].minimized &&
+                                        styles.activeTabOuter
                                     )}
                                     onMouseDown={() => toggleMinimize(key)}
                                 >
@@ -162,8 +162,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
                                             {},
                                             styles.tabContainer,
                                             lastActive === key &&
-                                                !windows[key].minimized &&
-                                                styles.activeTabInner
+                                            !windows[key].minimized &&
+                                            styles.activeTabInner
                                         )}
                                     >
                                         <Icon

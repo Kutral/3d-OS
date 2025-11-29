@@ -126,7 +126,7 @@ const Snake: React.FC<SnakeProps> = (props) => {
             left={56}
             width={initWidth}
             height={initHeight}
-            windowTitle="Snake Game"
+            windowTitle="Snake"
             windowBarIcon="windowGameIcon"
             closeWindow={props.onClose}
             onInteract={props.onInteract}
@@ -134,86 +134,104 @@ const Snake: React.FC<SnakeProps> = (props) => {
             bottomLeftText={`Score: ${score} | High Score: ${highScore}`}
         >
             <div style={{
-                position: 'relative',
-                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
                 height: '100%',
-                backgroundColor: '#2C3E50',
-                overflow: 'hidden'
+                backgroundColor: '#c0c0c0', // Windows 95 Gray
+                padding: 4,
+                boxSizing: 'border-box'
             }}>
-                {/* Snake */}
-                {snake.map((segment, i) => (
+                {/* Game Area Border */}
+                <div style={{
+                    position: 'relative',
+                    flex: 1,
+                    borderTop: '2px solid #808080',
+                    borderLeft: '2px solid #808080',
+                    borderRight: '2px solid #ffffff',
+                    borderBottom: '2px solid #ffffff',
+                    backgroundColor: 'black',
+                    overflow: 'hidden'
+                }}>
+                    {/* Snake */}
+                    {snake.map((segment, i) => (
+                        <div
+                            key={i}
+                            style={{
+                                position: 'absolute',
+                                left: segment.x * CELL_SIZE,
+                                top: segment.y * CELL_SIZE,
+                                width: CELL_SIZE,
+                                height: CELL_SIZE,
+                                backgroundColor: '#00ff00', // Retro Green
+                                border: '1px solid black',
+                                boxSizing: 'border-box'
+                            }}
+                        />
+                    ))}
+
+                    {/* Food */}
                     <div
-                        key={i}
                         style={{
                             position: 'absolute',
-                            left: segment.x * CELL_SIZE,
-                            top: segment.y * CELL_SIZE,
-                            width: CELL_SIZE - 2,
-                            height: CELL_SIZE - 2,
-                            backgroundColor: i === 0 ? '#2ECC71' : '#27AE60',
-                            borderRadius: 4,
+                            left: food.x * CELL_SIZE,
+                            top: food.y * CELL_SIZE,
+                            width: CELL_SIZE,
+                            height: CELL_SIZE,
+                            backgroundColor: 'red',
+                            border: '1px solid black',
+                            boxSizing: 'border-box'
                         }}
                     />
-                ))}
 
-                {/* Food */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        left: food.x * CELL_SIZE,
-                        top: food.y * CELL_SIZE,
-                        width: CELL_SIZE - 2,
-                        height: CELL_SIZE - 2,
-                        backgroundColor: '#E74C3C',
-                        borderRadius: '50%',
-                    }}
-                />
+                    {/* Game Over / Pause Overlay */}
+                    {(gameOver || isPaused) && (
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            backgroundColor: '#c0c0c0',
+                            border: '2px outset #ffffff',
+                            padding: 20,
+                            textAlign: 'center',
+                            color: 'black',
+                            boxShadow: '4px 4px 10px rgba(0,0,0,0.5)'
+                        }}>
+                            <h2 style={{ fontFamily: 'MSSerif', margin: '0 0 10px 0' }}>{gameOver ? 'Game Over' : 'Paused'}</h2>
+                            <p style={{ fontFamily: 'MSSerif', margin: '0 0 10px 0' }}>Score: {score}</p>
+                            {gameOver && (
+                                <button
+                                    onClick={resetGame}
+                                    style={{
+                                        padding: '4px 12px',
+                                        fontFamily: 'MSSerif',
+                                        cursor: 'pointer',
+                                        backgroundColor: '#c0c0c0',
+                                        border: '2px outset #ffffff',
+                                        color: 'black',
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    Play Again
+                                </button>
+                            )}
+                            {!gameOver && <p style={{ fontFamily: 'MSSerif', fontSize: 12 }}>Press Space to Resume</p>}
+                        </div>
+                    )}
+                </div>
 
-                {/* Game Over / Pause Overlay */}
-                {(gameOver || isPaused) && (
-                    <div style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        backgroundColor: 'rgba(0,0,0,0.8)',
-                        padding: 20,
-                        borderRadius: 10,
-                        textAlign: 'center',
-                        color: 'white',
-                    }}>
-                        <h2>{gameOver ? 'Game Over!' : 'Paused'}</h2>
-                        <p>Score: {score}</p>
-                        {gameOver && (
-                            <button
-                                onClick={resetGame}
-                                style={{
-                                    padding: '10px 20px',
-                                    fontSize: 16,
-                                    cursor: 'pointer',
-                                    backgroundColor: '#2ECC71',
-                                    border: 'none',
-                                    color: 'white',
-                                    borderRadius: 5,
-                                    marginTop: 10
-                                }}
-                            >
-                                Play Again
-                            </button>
-                        )}
-                        {!gameOver && <p>Press Space to Resume</p>}
-                    </div>
-                )}
-
-                {/* Controls Info */}
+                {/* Status Bar */}
                 <div style={{
-                    position: 'absolute',
-                    bottom: 10,
-                    right: 10,
-                    color: 'rgba(255,255,255,0.5)',
+                    marginTop: 4,
+                    padding: '2px 4px',
+                    fontFamily: 'MSSerif',
                     fontSize: 12,
+                    color: 'black',
+                    display: 'flex',
+                    justifyContent: 'space-between'
                 }}>
-                    Use Arrow Keys to Move • Space to Pause
+                    <span>Use Arrow Keys</span>
+                    <span>Space to Pause</span>
                 </div>
             </div>
         </Window>
