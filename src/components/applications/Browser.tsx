@@ -4,17 +4,42 @@ import useInitialWindowSize from '../../hooks/useInitialWindowSize';
 
 export interface BrowserProps extends WindowAppProps { }
 
+interface SearchResult {
+    title: string;
+    snippet: string;
+    pageid: number;
+}
+
 const Browser: React.FC<BrowserProps> = (props) => {
     const { initWidth, initHeight } = useInitialWindowSize({ margin: 50 });
     const [url, setUrl] = useState('http://www.google.com');
     const [searchTerm, setSearchTerm] = useState('');
     const [currentView, setCurrentView] = useState<'home' | 'results'>('home');
+    const [results, setResults] = useState<SearchResult[]>([]);
+    const [loading, setLoading] = useState(false);
 
-    const handleSearch = (e: React.FormEvent) => {
+    // Popup State
+    const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+
+    const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
         if (searchTerm) {
             setCurrentView('results');
             setUrl(`http://www.google.com/search?q=${encodeURIComponent(searchTerm)}`);
+            setLoading(true);
+
+            try {
+                // Fetch real results from Wikipedia API
+                const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchTerm)}&format=json&origin=*`);
+                const data = await response.json();
+                if (data.query && data.query.search) {
+                    setResults(data.query.search);
+                }
+            } catch (error) {
+                console.error("Search failed", error);
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -22,6 +47,23 @@ const Browser: React.FC<BrowserProps> = (props) => {
         setCurrentView('home');
         setSearchTerm('');
         setUrl('http://www.google.com');
+        setResults([]);
+    };
+
+    const handleLinkClick = (e: React.MouseEvent, linkUrl: string) => {
+        e.preventDefault();
+        setPendingUrl(linkUrl);
+    };
+
+    const confirmNavigation = () => {
+        if (pendingUrl) {
+            window.open(pendingUrl, '_blank');
+            setPendingUrl(null);
+        }
+    };
+
+    const cancelNavigation = () => {
+        setPendingUrl(null);
     };
 
     return (
@@ -37,7 +79,7 @@ const Browser: React.FC<BrowserProps> = (props) => {
             minimizeWindow={props.onMinimize}
             bottomLeftText="Done"
         >
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#c0c0c0' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#c0c0c0', position: 'relative' }}>
                 {/* Toolbar */}
                 <div style={{ borderBottom: '2px solid #808080', padding: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
                     <span style={{ fontFamily: 'MSSerif', fontSize: 14 }}>Address:</span>
@@ -65,7 +107,7 @@ const Browser: React.FC<BrowserProps> = (props) => {
                     overflow: 'auto',
                     width: '100%',
                     boxSizing: 'border-box',
-                    position: 'relative' // Ensure positioning context
+                    position: 'relative'
                 }}>
                     {currentView === 'home' ? (
                         <div style={{
@@ -80,7 +122,7 @@ const Browser: React.FC<BrowserProps> = (props) => {
                             justifyContent: 'center',
                             minHeight: '100%'
                         }}>
-                            {/* Retro Google Logo (1999 style colors + shadow) */}
+                            {/* Retro Google Logo */}
                             <div style={{
                                 fontSize: 60,
                                 fontFamily: 'Times New Roman',
@@ -169,33 +211,137 @@ const Browser: React.FC<BrowserProps> = (props) => {
                                 </form>
                             </div>
 
-                            {/* Mock Results */}
+                            {/* Results */}
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                                 <div style={{ fontSize: 12, color: '#666', backgroundColor: '#eee', padding: 4 }}>
-                                    Showing results for <b>{searchTerm}</b>
+                                    {loading ? 'Searching...' : `Showing results for ${searchTerm}`}
                                 </div>
 
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <a href="#" style={{ color: '#0000cc', fontSize: 16, textDecoration: 'underline', marginBottom: 2 }}>{searchTerm} - Wikipedia, the free encyclopedia</a>
-                                    <div style={{ color: '#008000', fontSize: 12, marginBottom: 2 }}>www.wikipedia.org/wiki/{searchTerm}</div>
-                                    <div style={{ color: '#000', fontSize: 12 }}>{searchTerm} is a very interesting topic that you are searching for. Wikipedia has a comprehensive article about it.</div>
-                                </div>
+                                {!loading && results.map((result) => (
+                                    <div key={result.pageid} style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <a
+                                            href={`https://en.wikipedia.org/?curid=${result.pageid}`}
+                                            onClick={(e) => handleLinkClick(e, `https://en.wikipedia.org/?curid=${result.pageid}`)}
+                                            style={{ color: '#0000cc', fontSize: 16, textDecoration: 'underline', marginBottom: 2, cursor: 'pointer' }}
+                                        >
+                                            {result.title}
+                                        </a>
+                                        <div style={{ color: '#008000', fontSize: 12, marginBottom: 2 }}>
+                                            www.wikipedia.org/wiki/{result.title.replace(/\s+/g, '_')}
+                                        </div>
+                                        <div
+                                            style={{ color: '#000', fontSize: 12 }}
+                                            dangerouslySetInnerHTML={{ __html: result.snippet + '...' }}
+                                        />
+                                    </div>
+                                ))}
 
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <a href="#" style={{ color: '#0000cc', fontSize: 16, textDecoration: 'underline', marginBottom: 2 }}>The Official {searchTerm} Website</a>
-                                    <div style={{ color: '#008000', fontSize: 12, marginBottom: 2 }}>www.{searchTerm.replace(/\s+/g, '').toLowerCase()}.com/</div>
-                                    <div style={{ color: '#000', fontSize: 12 }}>Welcome to the official website for {searchTerm}. Find all the latest news, updates, and information here.</div>
-                                </div>
-
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <a href="#" style={{ color: '#0000cc', fontSize: 16, textDecoration: 'underline', marginBottom: 2 }}>Images for {searchTerm}</a>
-                                    <div style={{ color: '#008000', fontSize: 12, marginBottom: 2 }}>images.google.com/images?q={searchTerm}</div>
-                                    <div style={{ color: '#000', fontSize: 12 }}>See more images for {searchTerm}.</div>
-                                </div>
+                                {!loading && results.length === 0 && (
+                                    <div style={{ color: '#666' }}>No results found. Try searching for something else.</div>
+                                )}
                             </div>
                         </div>
                     )}
                 </div>
+
+                {/* Confirmation Popup */}
+                {pendingUrl && (
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 9999
+                    }}>
+                        <div style={{
+                            width: 300,
+                            backgroundColor: '#c0c0c0',
+                            border: '2px outset white',
+                            padding: 2,
+                            boxShadow: '4px 4px 10px rgba(0,0,0,0.5)'
+                        }}>
+                            {/* Title Bar */}
+                            <div style={{
+                                backgroundColor: '#000080',
+                                color: 'white',
+                                padding: '2px 4px',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                fontFamily: 'MSSerif',
+                                fontSize: 14,
+                                fontWeight: 'bold'
+                            }}>
+                                <span>Security Alert</span>
+                                <button
+                                    onClick={cancelNavigation}
+                                    style={{
+                                        backgroundColor: '#c0c0c0',
+                                        border: '1px outset white',
+                                        width: 16,
+                                        height: 16,
+                                        fontSize: 10,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer'
+                                    }}
+                                >X</button>
+                            </div>
+
+                            {/* Content */}
+                            <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+                                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                                    <div style={{ fontSize: 32 }}>⚠️</div>
+                                    <p style={{ margin: 0, fontFamily: 'MSSerif', fontSize: 14 }}>
+                                        You are about to leave KutralOS and enter the outer world.
+                                        <br /><br />
+                                        Are you sure you want to continue?
+                                    </p>
+                                </div>
+
+                                <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
+                                    <button
+                                        onClick={confirmNavigation}
+                                        style={{
+                                            width: 70,
+                                            padding: '4px 0',
+                                            fontFamily: 'MSSerif',
+                                            fontSize: 12,
+                                            border: '2px outset white',
+                                            backgroundColor: '#c0c0c0',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        Yes
+                                    </button>
+                                    <button
+                                        onClick={cancelNavigation}
+                                        style={{
+                                            width: 70,
+                                            padding: '4px 0',
+                                            fontFamily: 'MSSerif',
+                                            fontSize: 12,
+                                            border: '2px outset white',
+                                            backgroundColor: '#c0c0c0',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold',
+                                            outline: '1px dotted black',
+                                            outlineOffset: -4
+                                        }}
+                                    >
+                                        No
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </Window>
     );
