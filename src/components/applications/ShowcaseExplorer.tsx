@@ -23,10 +23,10 @@ const ShowcaseExplorer: React.FC<ShowcaseExplorerProps> = (props) => {
                 bottomLeftText={'© Copyright 2025 Kutraleeswaran B'}
             >
                 <div className="site-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <h1 style={{ fontSize: 72, marginBottom: 16, lineHeight: 0.9 }}>Kutraleeswaran B</h1>
-                        <h2 style={{ marginBottom: 40 }}>Computer Science & Engineering Graduate</h2>
-                        <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
+                    <div style={{ textAlign: 'center', padding: 20, maxWidth: '100%' }}>
+                        <h1 style={{ fontSize: 42, marginBottom: 16, lineHeight: 1.1 }}>Kutraleeswaran B</h1>
+                        <h2 style={{ fontSize: 20, marginBottom: 32, fontWeight: 'normal' }}>Computer Science & Engineering Graduate</h2>
+                        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                             <button className="site-button" onClick={() => setCurrentPage('about')}>ABOUT</button>
                             <button className="site-button" onClick={() => setCurrentPage('experience')}>EXPERIENCE</button>
                             <button className="site-button" onClick={() => setCurrentPage('projects')}>PROJECTS</button>
