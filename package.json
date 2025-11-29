@@ -22,7 +22,7 @@
     "usehooks-ts": "^2.5.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://kutral.github.io/portfolio-os",
+  "homepage": "https://kutral.github.io/3d-OS",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
