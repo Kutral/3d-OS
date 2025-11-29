@@ -108,15 +108,15 @@ const DesktopShortcut: React.FC<DesktopShortcutProps> = ({
                         }
                     )}
                 />
-                <Icon icon={icon} style={styles.icon} />
+                <Icon icon={icon} style={styles.icon} size={32} />
             </div>
             <div
                 className={
                     isSelected
                         ? 'selected-shortcut-border'
                         : lastSelected
-                        ? 'shortcut-border'
-                        : ''
+                            ? 'shortcut-border'
+                            : ''
                 }
                 id={`${shortcutId}`}
                 style={isSelected ? { backgroundColor: colors.blue } : {}}
