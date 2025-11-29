@@ -254,10 +254,14 @@ const Desktop: React.FC<DesktopProps> = (props) => {
             })}
             <div style={styles.shortcuts}>
                 {shortcuts.map((shortcut, i) => {
+                    const ITEMS_PER_COL = 5;
+                    const col = Math.floor(i / ITEMS_PER_COL);
+                    const row = i % ITEMS_PER_COL;
                     return (
                         <div
                             style={Object.assign({}, styles.shortcutContainer, {
-                                top: i * 104,
+                                top: row * 104,
+                                left: col * 100,
                             })}
                             key={shortcut.shortcutName}
                         >
