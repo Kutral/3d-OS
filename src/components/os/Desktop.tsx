@@ -9,6 +9,7 @@ import Minesweeper from '../applications/Minesweeper';
 import Browser from '../applications/Browser';
 import TicTacToe from '../applications/TicTacToe';
 import FileManager from '../applications/FileManager';
+import Weather from '../applications/Weather';
 import Toolbar from './Toolbar';
 import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
 import Snake from '../applications/Snake';
@@ -80,6 +81,12 @@ const APPLICATIONS: {
         name: 'My Computer',
         shortcutIcon: 'computerBig',
         component: FileManager,
+    },
+    weather: {
+        key: 'weather',
+        name: 'Weather',
+        shortcutIcon: 'windowExplorerIcon',
+        component: Weather,
     },
     credits: {
         key: 'credits',
